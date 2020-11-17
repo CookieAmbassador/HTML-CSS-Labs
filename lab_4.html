@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tripathi</title>
+  <script>
+    function age_requirements(age)
+    {
+      if (age < 0) {
+        alert("Incorrect input");
+      }
+      if (age > 0 && age <= 17)
+      {
+        alert("For kiddos");
+      }
+      if (age>=18 && age<=30)
+      {
+        alert("For youngsters");
+      }
+      if (age>30 || age==0)
+      {
+        alert("For all ages");
+      }
+    }
+
+    function odd_numbers_via_while()
+    {
+      let output = document.getElementById("odd_while");
+      output.innerHTML="";
+      let number=0;
+      while (number!=50)
+      {
+        if (number % 2 != 0)
+        {
+          if (number==49)
+          {
+            output.innerHTML+=number
+          }
+          else
+          {
+              output.innerHTML+=number + ", "
+          }
+        }
+        number++;
+      }
+    }
+
+    function odd_numbers_via_for()
+    {
+      let output = document.getElementById("odd_for");
+      output.innerHTML="";
+      for (let number=0;number<=50;number++)
+      {
+        if (number % 2 != 0)
+        {
+          if (number==49)
+          {
+            output.innerHTML+=number
+          }
+          else
+          {
+            output.innerHTML+=number + ", "
+          }
+        }
+      }
+    }
+
+    function print_properties()
+    {
+      let output=  document.getElementById("output_properties");
+      output.innerHTML="";
+      for (const property in document)
+      {
+        output.innerHTML+=`${property}: ${document[property]}</br>`;
+      }
+    }
+  </script>
+</head>
+<body>
+<label for="age_input">Input age</label>
+<input type="text" id="age_input"/>
+<input type="button" value="check age requirements" onclick="age_requirements(document.getElementById('age_input').value)"/></br>
+<input type="button" value="odd numbers through 50 via while" onclick="odd_numbers_via_while()"/>
+<label id="odd_while"></label>; </br>
+<input type="button" value="odd numbers through 50 via for" onclick="odd_numbers_via_for()"/>
+<label id="odd_for"></label>;</br>
+<label for="properties_button">Document's properties</label><input type="button" onclick="print_properties()" value="print document-object's properties" id="properties_button"/><br>
+<label id="output_properties"></label>
+</body>
+</html>
