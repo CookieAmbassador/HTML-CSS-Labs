@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab1</title>
+  <style>
+    .main_div{
+      position: fixed;
+      top:50%;
+      left:50%;
+      -ms-transform: translateX(-50%) translateY(-50%);
+      -webkit-transform: translate(-50%,-50%);
+      transform: translate(-50%,-50%);
+      background-color:#e4e4e4;
+      border:1px solid;
+      display: inline-block;
+      margin: 0;
+    }
+    .operation_buttons{
+      background-color:#f88b21;
+      text-alignmen:center;
+      height: 35px;
+      width: 35px;
+      font-size: 8pt;
+      color: black;
+      text-align: center;
+
+    }
+    .number_buttons{
+      background-color:#e3e3e3;
+      height: 35px;
+      width: 35px;
+      font-size: 8pt;
+      color: black;
+      text-align: center;
+    }
+    .number_buttons_0{
+      background-color:#e3e3e3;
+      height: 35px;
+      width: 70px;
+      font-size: 8pt;
+      color: black;
+      text-align: center;
+    }
+    .table_style{
+      table-border-color-light: ghostwhite;
+
+    }
+    .output_field{
+      background-color: whitesmoke;
+      display: table-row;
+      width: auto;
+    }
+  </style>
+  <script>
+
+    let input_line;
+    let adds = new Array();
+    let result=0;
+    let next=false;
+    let another_operation_button_click=false;
+    let pre_last_operator;
+    let operation_string="";
+
+    function taking_percent() {
+      document.getElementById("output_line").value=(parseFloat(document.getElementById("output_line").value)*0.01);
+    }
+
+    function square_root() {
+      document.getElementById("output_line").value= Math.sqrt(parseFloat(document.getElementById("output_line").value));
+    }
+
+    function input(clicked) {
+      another_operation_button_click=false;
+      if(next==false)
+      {
+        document.getElementById("output_line").value+=document.getElementById(clicked).value;
+      }
+      else
+      {
+        document.getElementById("output_line").value="";
+        document.getElementById("output_line").value+=document.getElementById(clicked).value;
+        next=false;
+      }
+
+    }
+
+    function erase() {
+      document.getElementById("output_line").value="";
+      adds=[];
+    }
+
+    function do_the_math(clicked) {
+      if(another_operation_button_click==false) {
+        adds.push(parseFloat(document.getElementById("output_line").value))
+      }
+      else if(pre_last_operator=="/" || pre_last_operator=="*"){
+      adds.push(1);
+      }
+      else
+      {
+        adds.push(0);
+      }
+      if (pre_last_operator=="=")
+      {
+        adds=[];
+        adds.push(parseFloat(document.getElementById("output_line").value));
+      }
+        if(adds.length==2)
+        {
+          operation_string=adds[0].toString() + " " +document.getElementById(pre_last_operator).id+" "+adds[1].toString();
+          result = parseFloat(eval(operation_string));
+          document.getElementById("output_line").value=result;
+          adds = [];
+          adds.push(result);
+          result=0;
+        }
+        next=true;
+        pre_last_operator=document.getElementById(clicked).id;
+
+      another_operation_button_click=true;
+    }
+
+    function equals_sign(clicked) {
+        adds.push(parseFloat(document.getElementById("output_line").value))
+        operation_string=adds[0].toString() + " " +document.getElementById(pre_last_operator).id+" "+adds[1].toString();
+        result = parseFloat(eval(operation_string));
+        document.getElementById("output_line").value=result;
+        adds = [];
+        adds.push(result);
+        result=0;
+         pre_last_operator=document.getElementById(clicked).id;
+    }
+
+  </script>
+</head>
+<body>
+<div class="main_div">
+  <table class="table_style">
+    <tr>
+      <input class="output_field" id="output_line" type="text"  disabled/>
+    </tr>
+    <tr>
+      <td><input type="button" value="AC" onclick="erase()" class="operation_buttons"/></td>
+      <td><input type="button" value="=" id="="  onclick="equals_sign(this.id)" class="operation_buttons"/></td>
+      <td><input type="button" value="%" onclick="taking_percent()" class="operation_buttons"/></td>
+      <td><input type="button" value="/" id="/" onclick="do_the_math(this.id)" class="operation_buttons"/></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="7" id="7" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="8" id="8" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="9" id="9" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="x" id="*"  onclick="do_the_math(this.id)" class="operation_buttons"/></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="4" id="4" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="5" id="5" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="6" id="6" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="-" id="-" onclick="do_the_math(this.id)" class="operation_buttons"/></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="1" id="1" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="2" id="2" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="3" id="3" class="number_buttons" onclick="input(this.id)"/></td>
+      <td><input type="button" value="+" id="+" onclick="do_the_math(this.id)" class="operation_buttons"/></td>
+    </tr>
+    <tr>
+      <td width="60" colspan="2"><input type="button" value="0" id="0" onclick="input(this.id)" class="number_buttons_0"/></td>
+      <td><input type="button" value="." id="." onclick="input(this.id)" class="number_buttons"/></td>
+      <td><input type="button" value="sqrt" onclick="square_root()" class="operation_buttons"/></td>
+    </tr>
+
+  </table>
+</div>
+</body>
+</html>
