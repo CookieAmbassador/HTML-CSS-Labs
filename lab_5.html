@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    <title>Tripathi</title>
+  <script>
+    function random_numbers_array()
+    {
+      let size = document.getElementById("size").value;
+      let output_default = document.getElementById("output_default");
+      let output_changed = document.getElementById("output_changed");
+      output_changed.innerHTML="changed: "; output_default.innerHTML="default: ";
+      let random_numbers = new Array();
+      //Let's fill this baby with numbers
+      for (let i=0;i<size;i++)
+      {
+        random_numbers.push(Math.round(Math.random()*50));
+      }
+      let max = random_numbers[0];
+      let max_index=0;
+      let min = random_numbers[0];
+      let min_index=0;
+      //'cout'-ing array
+      for(let i=0;i<size;i++)
+      {
+        if (i==size-1)
+        {
+          output_default.innerHTML+= random_numbers[i];
+        }
+        else
+        {
+          output_default.innerHTML+= random_numbers[i]+", ";
+        }
+      }
+      //Let's get those min and max, shall we?
+      for (let i=1;i<size;i++)
+      {
+        if (random_numbers[i]>max)
+        {
+          max = random_numbers[i];
+          max_index=i;
+          continue;
+        }
+        if(random_numbers[i]<min)
+        {
+          min = random_numbers[i];
+          min_index=i;
+        }
+      }
+      //extreme swapping
+      random_numbers[max_index] = random_numbers[max_index]+random_numbers[min_index];
+      random_numbers[min_index] = random_numbers[max_index]-random_numbers[min_index];
+      random_numbers[max_index] = random_numbers[max_index]-random_numbers[min_index];
+      //'cout'-ing array
+      for(let i=0;i<size;i++)
+      {
+        if (i==size-1)
+        {
+          output_changed.innerHTML+= random_numbers[i];
+        }
+        else
+        {
+          output_changed.innerHTML+= random_numbers[i]+", ";
+        }
+      }
+    }
+
+    function author_associated_array()
+    {
+      let input_div = document.getElementById("authors");
+      let input_elements=""
+      //associated array of authors and their noves
+      let novels={"Пушкин":["Eвгений Онегин", "Капитанская дочка"],"Есенин":["Письмо к женщине", "Отговорила роща золотая"], "Лермонтов":["Мцыри", "Герой нашего времени"], "Бальмонт":["Под северным небом", "Ворон (перевод)"]}
+      //Let's  look into it
+      for (let [key, value] of Object.entries(novels))
+      {
+        input_elements += key + ": " + value + "</br>";
+      }
+      input_div.innerHTML=input_elements;
+    }
+
+    function ten_integers_sum()
+    {
+      let sum=0;
+      let size =10;
+      let output_sum = document.getElementById("output_sum");
+      output_sum.innerHTML="Sum: ";
+      let random_numbers = new Array();
+      //Let's fill this baby with numbers
+      for (let i=0;i<size;i++)
+      {
+        random_numbers.push(Math.round(Math.random()*10));
+        sum+=random_numbers[i];
+      }
+      //'cout'-ing
+      for (let i=0;i<size;i++)
+      {
+        if(i==size-1)
+        {
+          output_sum.innerHTML+=  random_numbers[i] + " = "
+        }
+        else
+        {
+          output_sum.innerHTML+=  random_numbers[i] + " + "
+        }
+      }
+      output_sum.innerHTML+=sum;
+    }
+
+  </script>
+</head>
+<body>
+<label>1.</label></br>
+<label for="size">Array size</label>
+<input type="text" id="size"/>
+<input type="button" value="let's check this out" onclick="random_numbers_array()"/></br>
+<label id="output_default"></label></br>
+<label id="output_changed"></label></br></br>
+<label>2, 3.</label></br>
+<div id="authors"></div>
+<script>author_associated_array()</script></br></br>
+<label>4.</label><br>
+<label id="output_sum"></label></br>
+<script>ten_integers_sum()</script>
+</body>
+</html>
