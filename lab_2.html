@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab2 Tripathi</title>
+  <style>
+  </style>
+  <script>
+	var checked_sort="No";
+    var i=0;
+    html_path = window.location.pathname
+    var db_path = html_path.slice(1, html_path.length - 10).replace(/\//g,'\\') + "StudentsAndGroups.mdb"
+    ADO = new ActiveXObject("ADODB.Connection");
+    ADO.Open("Provider=Microsoft.Jet.OLEDB.4.0;Data Source="+db_path, "", "", 0);
+	function change_sort(clicked)
+	{
+		if (document.getElementById(clicked).checked==true)
+		{
+			checked_sort=clicked;
+		}
+	}
+    function  get_groups()
+    {
+      var Table = document.getElementById("group_list");
+      Table.innerHTML="";
+      groups = ADO.Execute("SELECT * FROM Groups");
+      i=0;
+      while (!groups.EOF)
+      {
+
+        var new_row = document.getElementById("group_list").insertRow(i);
+        var new_cell_1 = new_row.insertCell(0);
+        new_cell_1.innerHTML=groups.Fields(0).Value;
+		var id_for_button = groups.Fields(0).Value;
+        var new_cell_button  = new_row.insertCell(1);
+        new_cell_button.innerHTML="<input type=\"button\" value=\"students\" id='"+id_for_button+"' onclick=\"get_students(this.id)\" />";
+        i++;
+        groups.moveNext();
+      }
+    }
+
+function set_Date_format(some_date) {
+		date = new Date(some_date);
+		var month = date.getMonth()+1;
+		var stringMonth = "" + month.toString();
+		if (stringMonth.length<2)
+		{
+			stringMonth = "0" + stringMonth;
+		}
+		var day = date.getDate();
+		var stringDay = "" + day.toString();
+		if (stringDay.length<2)
+		{
+			stringDay = "0" + stringDay;
+		}
+		var dateString = stringDay + "." + stringMonth +"."+ date.getFullYear();
+		return dateString;       
+	}
+	
+    function get_students(clicked)
+    {
+		var Table = document.getElementById("student_list");
+		Table.innerHTML="";
+		if(checked_sort=="Birth" || checked_sort=="Name")
+		{
+				students = ADO.Execute("SELECT * FROM Students ORDER BY "+checked_sort);
+
+		}
+		else
+		{
+				students = ADO.Execute("SELECT * FROM Students");
+
+		}
+		i=0;
+	  	var student = [];
+      while (!students.EOF)
+      {
+		if(students.Fields(3).Value==clicked)
+		{
+		        var new_row = document.getElementById("student_list").insertRow(i);
+				var new_cell_1 = new_row.insertCell(0);
+				new_cell_1.innerHTML=students.Fields(1).Value; 
+				var new_cell_2 = new_row.insertCell(1);
+				var birth_date = students.Fields(2).Value;
+				var birth = set_Date_format(birth_date);
+				new_cell_2.innerHTML=birth;
+				i++;
+		}
+						student.push([students.Fields(1).Value, set_Date_format(students.Fields(2).Value),students.Fields(3).Value])
+
+		students.moveNext();
+      }
+	  			ADO.Execute("DELETE FROM Students");
+	  student.forEach(function(person) {
+	  			ADO.Execute("INSERT INTO Students (Name, Birth, Group_name) values(\""+person[0]+"\",\""+person[1]+"\",\""+person[2]+"\");")
+
+		});
+    }
+
+  </script>
+</head>
+<body>
+<form id="main_form">
+  <div id="main_div">
+   <input type="button" id="start_up_button" value="Welcome" onclick="get_groups()"/><br>
+	<input type="radio" id="Birth" name="sort" value="sort by date" onchange="change_sort(this.id)"/><label>sort by date</label><br>
+	<input type="radio" id="Name" name="sort" value="sort by alphabet" onchange="change_sort(this.id)"/><label>sort by alphabet</label>
+    <table id="group_list">
+    </table>
+  </div>
+  <div>
+    <table id="student_list">
+
+    </table>
+<label>In order to sort check a radiobutton now or check it anytime after and press "students" button beside a group name</label>
+  </div>
+</form>
+</body>
+</html>
