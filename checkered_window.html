@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tripathi</title>
+  <script>
+    let size = 9;
+
+    function start_up_filling()
+    {
+      let table = document.getElementById("checkers");
+      let cell_colors = new Array();
+      let row_size = 100/size;
+      let cell_size = 100/size;
+      let row_id="";
+      let cell_id="";
+      table.innerHTML="";
+      for(let i=0;i<size;i++)
+      {
+        row_id="row"+i;
+        table.innerHTML+="<tr id=\""+row_id+"\" style='position: relative;height:"+row_size+"%'></tr>"
+        for (let j=0;j<size;j++)
+        {
+          cell_id="cell"+(i*size+j).toString();
+          document.getElementById(row_id).innerHTML+="<td id=\""+cell_id+"\" style='height:"+row_size+"%; width:"+cell_size+"'></tr></td>";
+        }
+      }
+      document.getElementById("cell0").style.background="black";
+      cell_colors.push("black");
+      for(let i=1;i<size*size;i++)
+      {
+        cell_id="cell" + i;
+        if(cell_colors[i-1]=="black")
+        {
+          document.getElementById(cell_id).style.background="white";
+          cell_colors.push("white");
+        }
+        else
+        {
+          document.getElementById(cell_id).style.background="black";
+          cell_colors.push("black");
+        }
+      }
+    }
+
+    function change_colors()
+    {
+      let cell_id="";
+      let command="";
+      for (let i=0;i<size*size;i++)
+      {
+        cell_id="cell"+i;
+        if(document.getElementById(cell_id).style.background=="white")
+        {
+          command="document.getElementById(\""+cell_id+"\").style.background=\"black\"";
+        }
+        else
+        {
+          command="document.getElementById(\""+cell_id+"\").style.background=\"white\"";
+        }
+        eval(command);
+      }
+    }
+  </script>
+</head>
+<body>
+<div id="div_for_table">
+  <table style="width:100%; height:100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0;" >
+<tbody id="checkers">
+
+</tbody>
+  </table>
+</div>
+<script>
+  start_up_filling();
+  setInterval(change_colors, 1000);
+</script>
+</body>
+</html>

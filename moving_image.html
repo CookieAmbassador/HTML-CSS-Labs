@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tripathi</title>
+  <script>
+    function  move_image()
+    {
+      let image_element = document.getElementById("moving_image");
+      x = Math.random()*window.innerWidth;
+      y = Math.random()*window.innerHeight;
+      image_element.style.left = x + "px";
+      image_element.style.top = y+ "px";
+    }
+  </script>
+</head>
+<body>
+<img id="moving_image" width="100"  style="position: absolute; left: 10px; top: 10px;" height="100" src="Glomgold.png"/>
+<script>
+  setInterval(move_image, 1000);
+</script>
+</body>
+</html>
